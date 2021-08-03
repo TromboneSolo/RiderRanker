@@ -1,31 +1,42 @@
 import React, { Component } from "react";
 
 
-export default class ImageBattle {
+export default class ImageBattle extends React.Component{
     constructor(props){
         super(props);
 
     }
 
-    componentDidMount(){
 
-    }
+
+
+
+
     render() {
+        if (this.props.fighter1)
+        {
+            var fighter1ImgSrc = require('../assets/images/' + this.props.fighter1 + '.png');
+            var fighter2ImgSrc = require('../assets/images/' + this.props.fighter2 + '.png');
+        }
+
         return(
+            (this.props.fighter1) ?
             <div>
-            <button onClick={this.props.onResult('fighter1')}
-            id="leftFighter"
+            <button 
+                style = {{background: `url(${fighter1ImgSrc})`}}
+                onClick={this.props.onResult('fighter1')}
+                id="leftFighter"
+            />
+            <button
+            id="bothButton" onClick={this.props.onResult('tie')}
             ></button>
             <button
-            id="bothButton" onClick={this.props.onResult('both')}
-            ></button>
-            <button onClick={this.props.onResult('neither')}
-            id="neitherButton"
-            ></button>
-            <button
-            id="rightFighter" onClick={this.props.onResult('fighter2')}
-            ></button>
+                            style = {{background: `url(${fighter2ImgSrc})`}}
+                id="rightFighter" 
+                onClick={this.props.onResult('fighter2')}
+            />
             </div>
+            : <span/>
         )
     }
 }
