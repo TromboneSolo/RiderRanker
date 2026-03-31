@@ -1,33 +1,45 @@
 # RiderRanker
 
-A React application that lets users rank a collection of images through head-to-head pairwise battles, then save the final ordered list.
+A React application that lets users rank a collection of images through head-to-head comparisons, then save the final ordered list.
 
 ## Purpose
 
-Ranking a large set of images by direct comparison is more intuitive than assigning numerical scores. RiderRanker presents every possible pair of images one at a time and asks the user to pick a winner (or declare a tie). Once all battles are resolved, the images are sorted by accumulated score and the full ranked list can be exported.
+Ranking a large set of images by direct comparison is more intuitive than assigning numerical scores. RiderRanker presents pairs of images one at a time and asks the user to pick a preference (or declare a tie). A merge-sort algorithm drives the sequence of comparisons, producing a complete ranked list in far fewer steps than exhaustive pairwise matching would require.
 
 ## Scope
 
-- **Image input** — users upload any number of local image files via drag-and-drop or a file picker. A built-in demo set of five Kamen Rider characters is also available for quick testing.
-- **Battle phase** — every unique pair of images is compared exactly once (N × (N−1) / 2 total battles). Battles are shuffled so adjacent images are not always matched first. A progress bar tracks completion. Users can end early and rank with only the battles completed so far.
-- **Scoring** — a win awards 1 point to the chosen image; a tie awards 0.5 points to each. Images that were never compared (due to an early finish) receive 0 points.
-- **Results** — images are displayed in descending score order. The top three positions are highlighted with gold, silver, and bronze accents.
-- **Export** — the ranked list can be saved as a **JSON** file (includes rank, name, score, and base64-encoded image data) or as a **CSV** file (rank, name, score).
+- **Image input** — users upload any number of local image files via drag-and-drop or a file picker. Two built-in demo sets are available for quick testing: five Kamen Rider characters (PNG) and five Unit Fighters (SVG).
+- **Comparison phase** — comparisons are driven by a bottom-up merge sort, requiring only ~N×log₂(N) comparisons rather than the N×(N−1)/2 needed for full exhaustive ranking. The upload screen shows both numbers so the user can see the difference. A progress bar and pass counter track completion. Users can finish early and receive a partial ranking based on comparisons completed so far.
+- **Results** — images are displayed in the order produced by the sort. The top three positions are highlighted with gold, silver, and bronze accents. If the user finished early, the results are labelled "Partial Rankings" with an explanatory note.
+- **Export** — the ranked list can be saved as a **JSON** file (rank, name, base64-encoded image data) or as a **CSV** file (rank, name).
 
 ## Project Structure
 
 ```
-riderranker/
-└── src/
-    ├── App.js                        # Root component; mounts MainLayout
-    ├── App.css                       # Global dark-theme styles
-    ├── assets/images/                # Built-in demo images (Kamen Rider)
-    ├── layouts/
-    │   └── MainLayout.jsx            # Top-level state machine (upload → battling → results)
-    └── components/
-        ├── ImageUpload.jsx           # Upload screen with drag-and-drop and demo option
-        ├── ImageBattle.jsx           # Head-to-head battle UI with progress bar
-        └── RankingResults.jsx        # Ranked list display with JSON/CSV export
+RiderRanker/
+├── README.md
+└── riderranker/
+    └── src/
+        ├── App.js                          # Root component; mounts MainLayout
+        ├── App.css                         # Global dark-theme styles
+        ├── assets/images/
+        │   ├── AGITO.png                   # Demo set 1: Kamen Rider characters
+        │   ├── BLADE.png
+        │   ├── FAIZ.png
+        │   ├── KUUGA.png
+        │   ├── RYUKI.png
+        │   └── set2/                       # Demo set 2: Unit Fighters (SVG)
+        │       ├── ZERO.svg
+        │       ├── PHANTOM.svg
+        │       ├── TITAN.svg
+        │       ├── NOVA.svg
+        │       └── SPECTER.svg
+        ├── layouts/
+        │   └── MainLayout.jsx              # Top-level state machine (upload → battling → results)
+        └── components/
+            ├── ImageUpload.jsx             # Upload screen with drag-and-drop and demo buttons
+            ├── ImageBattle.jsx             # Head-to-head comparison UI with progress display
+            └── RankingResults.jsx          # Ranked list display with JSON/CSV export
 ```
 
 ## Running the App
@@ -40,13 +52,17 @@ npm start
 
 > **Note:** The project uses Create React App 3 with webpack 4, which is incompatible with Node 17+. The `start` and `build` scripts include `NODE_OPTIONS=--openssl-legacy-provider` to work around this. No action is needed beyond running `npm start`.
 
-## Scoring Algorithm
+## Ranking Algorithm
 
-The ranking uses a simple points tally:
+Comparisons are driven by a **bottom-up merge sort**. The images are shuffled, then split into individual sorted runs. Each pass merges adjacent runs by asking the user to compare the front item of each run; their choice determines which item is placed next in the merged result. Ties advance both items simultaneously.
 
-| Outcome       | Winner  | Loser   |
-|---------------|---------|---------|
-| One wins      | +1 pt   | +0 pts  |
-| Tie / skipped | +0.5 pt | +0.5 pt |
+This continues until all runs have merged into one, giving a complete total ordering.
 
-Images with equal scores retain a stable relative order (the order they were uploaded).
+| Images | Exhaustive battles | Merge sort (est. upper bound) |
+|--------|-------------------|-------------------------------|
+| 10     | 45                | ~40                           |
+| 50     | 1,225             | ~300                          |
+| 100    | 4,950             | ~700                          |
+| 500    | 124,750           | ~4,500                        |
+
+If the user finishes early, a best-effort partial ranking is constructed from whichever sorted runs have been completed.
