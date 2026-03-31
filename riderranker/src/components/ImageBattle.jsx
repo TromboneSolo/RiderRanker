@@ -1,6 +1,7 @@
 // Renders a single head-to-head battle between two images.
 // The user clicks the image they prefer (or "Tie / Skip") to record a result.
 // Shows a progress bar and a "Finish Early" button in the header.
+import React, { useState, useCallback } from "react";
 export default function ImageBattle({ fighter1, fighter2, onResult, onQuit, currentBattle, totalBattles }) {
   // Percentage of battles completed before this one, used to fill the progress bar.
   const progressPct = Math.round(((currentBattle - 1) / totalBattles) * 100);
