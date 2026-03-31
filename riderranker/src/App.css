@@ -58,6 +58,13 @@ body {
   font-size: 1rem;
 }
 
+.demo-btn-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
 .demo-btn {
   background: transparent;
   border: 1px solid #333;
@@ -66,7 +73,6 @@ body {
   padding: 8px 20px;
   font-size: 0.85rem;
   cursor: pointer;
-  margin-bottom: 28px;
   transition: border-color 0.2s, color 0.2s;
 }
 
@@ -179,12 +185,23 @@ body {
   margin-bottom: 16px;
 }
 
+.battle-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 130px;
+}
+
 .battle-counter {
-  font-size: 0.9rem;
-  font-weight: 400;
-  color: #666;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #aaa;
   white-space: nowrap;
-  min-width: 110px;
+}
+
+.battle-pass {
+  font-size: 0.75rem;
+  color: #444;
+  white-space: nowrap;
 }
 
 .progress-bar {
@@ -364,21 +381,17 @@ body {
   background: #1a1a1a;
 }
 
-.result-info {
-  flex: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .result-name {
+  flex: 1;
   font-size: 0.98rem;
   font-weight: 600;
 }
 
-.result-score {
-  font-size: 0.85rem;
-  color: #555;
+.partial-notice {
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 24px;
 }
 
 .results-actions {

@@ -4,13 +4,28 @@ import BLADE from "../assets/images/BLADE.png";
 import FAIZ from "../assets/images/FAIZ.png";
 import KUUGA from "../assets/images/KUUGA.png";
 import RYUKI from "../assets/images/RYUKI.png";
+import ZERO from "../assets/images/set2/ZERO.svg";
+import PHANTOM from "../assets/images/set2/PHANTOM.svg";
+import TITAN from "../assets/images/set2/TITAN.svg";
+import NOVA from "../assets/images/set2/NOVA.svg";
+import SPECTER from "../assets/images/set2/SPECTER.svg";
 
+// Built-in demo set 1 — Kamen Rider characters
 const DEMO_IMAGES = [
   { id: "demo_agito", name: "AGITO", src: AGITO },
   { id: "demo_blade", name: "BLADE", src: BLADE },
   { id: "demo_faiz", name: "FAIZ", src: FAIZ },
   { id: "demo_kuuga", name: "KUUGA", src: KUUGA },
   { id: "demo_ryuki", name: "RYUKI", src: RYUKI },
+];
+
+// Built-in demo set 2 — Unit fighters
+const DEMO_IMAGES_2 = [
+  { id: "demo_zero", name: "ZERO", src: ZERO },
+  { id: "demo_phantom", name: "PHANTOM", src: PHANTOM },
+  { id: "demo_titan", name: "TITAN", src: TITAN },
+  { id: "demo_nova", name: "NOVA", src: NOVA },
+  { id: "demo_specter", name: "SPECTER", src: SPECTER },
 ];
 
 // Lets the user build their image set before starting the ranking session.
@@ -49,7 +64,11 @@ export default function ImageUpload({ onImagesSelected }) {
   // Removes a single image from the preview list by its id.
   const removeImage = (id) => setPreviews(prev => prev.filter(img => img.id !== id));
 
-  const battleCount = previews.length * (previews.length - 1) / 2;
+  const n = previews.length;
+  const battleCount = Math.round(n * (n - 1) / 2);
+  // Merge sort needs only O(n log n) comparisons rather than the full O(n²) exhaustive count
+  const estimatedComparisons = n < 2 ? 0
+    : Math.round(n * Math.ceil(Math.log2(Math.max(n, 2))));
 
   return (
     <div className="upload-container">
@@ -74,9 +93,14 @@ export default function ImageUpload({ onImagesSelected }) {
         />
       </div>
 
-      <button className="demo-btn" onClick={() => setPreviews(DEMO_IMAGES)}>
-        Use demo images (Kamen Rider)
-      </button>
+      <div className="demo-btn-row">
+        <button className="demo-btn" onClick={() => setPreviews(DEMO_IMAGES)}>
+          Demo: Kamen Rider
+        </button>
+        <button className="demo-btn" onClick={() => setPreviews(DEMO_IMAGES_2)}>
+          Demo: Unit Fighters
+        </button>
+      </div>
 
       {previews.length > 0 && (
         <>
@@ -91,7 +115,7 @@ export default function ImageUpload({ onImagesSelected }) {
           </div>
 
           <p className="battle-count">
-            {previews.length} images &mdash; {battleCount} battles total
+            {n} images &mdash; ~{estimatedComparisons} comparisons (vs {battleCount} exhaustive)
           </p>
 
           <button

@@ -1,27 +1,27 @@
 import React from "react";
 
-// Displays the final ranked list of images and provides export buttons.
-// Rankings are passed in pre-sorted (highest score first) from MainLayout.
-export default function RankingResults({ rankings, onReset }) {
+// Displays the final ranked list produced by the merge sort.
+// Rankings are passed in already sorted (index 0 = most preferred).
+// isPartial is true when the user finished early and the sort was incomplete.
+export default function RankingResults({ rankings, isPartial, onReset }) {
 
-  // Serialises the ranked list to JSON (rank, name, score, base64 image data)
-  // and triggers a file download in the browser.
+  // Serialises the ranked list to JSON (rank, name, base64 image) and
+  // triggers a browser file download.
   const handleSaveJSON = () => {
     const data = rankings.map((img, i) => ({
       rank: i + 1,
       name: img.name,
-      score: img.score,
       image: img.src,
     }));
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     downloadBlob(blob, "rankings.json");
   };
 
-  // Serialises the ranked list to CSV (rank, name, score — no image data)
-  // and triggers a file download in the browser.
+  // Serialises the ranked list to CSV (rank, name — no image data) and
+  // triggers a browser file download.
   const handleSaveCSV = () => {
-    const rows = ["Rank,Name,Score"].concat(
-      rankings.map((img, i) => `${i + 1},"${img.name}",${img.score}`)
+    const rows = ["Rank,Name"].concat(
+      rankings.map((img, i) => `${i + 1},"${img.name}"`)
     );
     const blob = new Blob([rows.join("\n")], { type: "text/csv" });
     downloadBlob(blob, "rankings.csv");
@@ -29,17 +29,19 @@ export default function RankingResults({ rankings, onReset }) {
 
   return (
     <div className="results-container">
-      <h1>Final Rankings</h1>
+      <h1>{isPartial ? "Partial Rankings" : "Final Rankings"}</h1>
+      {isPartial && (
+        <p className="partial-notice">
+          Ranking is based on comparisons completed before you finished early.
+        </p>
+      )}
 
       <div className="results-list">
         {rankings.map((img, index) => (
           <div key={img.id} className={`result-item rank-${index + 1}`}>
             <span className="rank-number">#{index + 1}</span>
             <img src={img.src} alt={img.name} className="result-thumbnail" />
-            <div className="result-info">
-              <span className="result-name">{img.name}</span>
-              <span className="result-score">{img.score} pts</span>
-            </div>
+            <span className="result-name">{img.name}</span>
           </div>
         ))}
       </div>

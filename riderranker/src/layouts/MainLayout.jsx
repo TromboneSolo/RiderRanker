@@ -1,85 +1,184 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import ImageUpload from "../components/ImageUpload";
 import ImageBattle from "../components/ImageBattle";
 import RankingResults from "../components/RankingResults";
 
-// Builds every unique pair from the images array (N*(N-1)/2 total) and
-// shuffles them so the order feels random rather than sequential.
-function generateAllPairs(images) {
-  const pairs = [];
-  for (let i = 0; i < images.length; i++) {
-    for (let j = i + 1; j < images.length; j++) {
-      pairs.push({ fighter1: images[i].id, fighter2: images[j].id, result: null });
+// ---------------------------------------------------------------------------
+// Merge-sort state machine
+//
+// Instead of exhaustive pairwise battles (O(n²)), we use a bottom-up merge
+// sort driven by the user's choices. Each comparison asks the user to pick
+// between the front item of two sorted runs. This produces a total ordering
+// in O(n log n) comparisons — roughly 700 for 100 images vs 4,950 exhaustive.
+// ---------------------------------------------------------------------------
+
+// Builds the initial sort state from an array of images.
+// Shuffles first so the initial order doesn't bias early comparisons.
+function initSortState(images) {
+  const n = images.length;
+  const shuffled = [...images].sort(() => Math.random() - 0.5);
+  const state = {
+    runs: shuffled.map(img => [img]), // start: each image is its own sorted run
+    passBuffer: [],                   // completed merges accumulate here each pass
+    mergeLeft: null,                  // left side of the active merge
+    mergeRight: null,                 // right side of the active merge
+    mergeResult: [],                  // items placed so far in the active merge
+    leftIdx: 0,
+    rightIdx: 0,
+    comparisons: 0,                   // total comparisons completed
+    pass: 1,                          // current merge pass (1-indexed)
+    totalPasses: Math.ceil(Math.log2(Math.max(n, 2))),
+    done: false,
+  };
+  return advanceToNextComparison(state);
+}
+
+// Runs the merge-sort state forward until either a user comparison is needed
+// or the sort is fully complete. Pure function — returns a new state object.
+function advanceToNextComparison(state) {
+  let { runs, passBuffer, mergeLeft, mergeRight, mergeResult,
+        leftIdx, rightIdx, comparisons, pass, totalPasses } = state;
+
+  while (true) {
+    if (mergeLeft !== null) {
+      if (leftIdx >= mergeLeft.length && rightIdx >= mergeRight.length) {
+        // Active merge is complete — store result and clear merge slot
+        passBuffer = [...passBuffer, mergeResult];
+        mergeLeft = null; mergeRight = null; mergeResult = [];
+        leftIdx = 0; rightIdx = 0;
+        continue;
+      }
+      if (leftIdx >= mergeLeft.length) {
+        // Left side exhausted — drain the remaining right items without comparing
+        mergeResult = [...mergeResult, ...mergeRight.slice(rightIdx)];
+        rightIdx = mergeRight.length;
+        continue;
+      }
+      if (rightIdx >= mergeRight.length) {
+        // Right side exhausted — drain the remaining left items without comparing
+        mergeResult = [...mergeResult, ...mergeLeft.slice(leftIdx)];
+        leftIdx = mergeLeft.length;
+        continue;
+      }
+      // Both sides have items — a user comparison is required here
+      return { runs, passBuffer, mergeLeft, mergeRight, mergeResult,
+               leftIdx, rightIdx, comparisons, pass, totalPasses, done: false };
     }
+
+    // No active merge; pick the next pair of runs to merge
+    if (runs.length === 0) {
+      if (passBuffer.length <= 1) {
+        // All runs collapsed into one — sorting complete
+        return { runs: passBuffer.length === 1 ? passBuffer : [],
+                 passBuffer: [], mergeLeft: null, mergeRight: null,
+                 mergeResult: [], leftIdx: 0, rightIdx: 0,
+                 comparisons, pass, totalPasses, done: true };
+      }
+      // Start the next pass using the completed merges from this pass
+      runs = passBuffer;
+      passBuffer = [];
+      pass = pass + 1;
+      continue;
+    }
+
+    if (runs.length === 1) {
+      // Odd run out — carry it forward to the next pass unchanged
+      passBuffer = [...passBuffer, runs[0]];
+      runs = [];
+      continue;
+    }
+
+    // Take the next two runs and begin merging them
+    mergeLeft = runs[0];
+    mergeRight = runs[1];
+    runs = runs.slice(2);
+    mergeResult = [];
+    leftIdx = 0;
+    rightIdx = 0;
   }
-  // Shuffle so adjacent images don't always battle first
-  return pairs.sort(() => Math.random() - 0.5);
 }
 
-// Tallies each image's score from the completed battles (1 pt for a win,
-// 0.5 pt each for a tie) and returns the images array sorted high-to-low.
-function computeRankings(images, battles) {
-  const scores = {};
-  images.forEach(img => { scores[img.id] = 0; });
-  battles.forEach(battle => {
-    if (battle.result === "fighter1") scores[battle.fighter1] += 1;
-    else if (battle.result === "fighter2") scores[battle.fighter2] += 1;
-    else if (battle.result === "tie") {
-      scores[battle.fighter1] += 0.5;
-      scores[battle.fighter2] += 0.5;
-    }
-  });
-  return [...images]
-    .map(img => ({ ...img, score: scores[img.id] }))
-    .sort((a, b) => b.score - a.score);
+// Records the user's choice for the current comparison and advances the sort.
+// "fighter1" = left wins, "fighter2" = right wins, "tie" = place both and advance both.
+function applyComparison(state, result) {
+  let { mergeLeft, mergeRight, mergeResult, leftIdx, rightIdx, comparisons } = state;
+
+  if (result === "fighter1") {
+    mergeResult = [...mergeResult, mergeLeft[leftIdx]];
+    leftIdx++;
+  } else if (result === "fighter2") {
+    mergeResult = [...mergeResult, mergeRight[rightIdx]];
+    rightIdx++;
+  } else {
+    // Tie: place both items together (left before right) and advance both indices
+    mergeResult = [...mergeResult, mergeLeft[leftIdx], mergeRight[rightIdx]];
+    leftIdx++;
+    rightIdx++;
+  }
+
+  return advanceToNextComparison(
+    { ...state, mergeResult, leftIdx, rightIdx, comparisons: comparisons + 1 }
+  );
 }
 
-// Top-level state machine that owns all session data and routes between
-// the three phases: upload → battling → results.
+// Returns the ranked image array from a completed or partially-completed sort.
+// For a finished sort this is exact; for an early finish it is a best-effort
+// ordering using whatever sorted runs have been built so far.
+function getRankings(sortState) {
+  if (sortState.done) {
+    return sortState.runs[0] || [];
+  }
+  // Partial: flatten completed runs, then the in-progress merge, then untouched runs
+  const { runs, passBuffer, mergeLeft, mergeRight, mergeResult, leftIdx, rightIdx } = sortState;
+  return [
+    ...passBuffer.flat(),
+    ...(mergeResult || []),
+    ...(mergeLeft  ? mergeLeft.slice(leftIdx)   : []),
+    ...(mergeRight ? mergeRight.slice(rightIdx) : []),
+    ...runs.flat(),
+  ];
+}
+
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
+
 export default function MainLayout() {
   const [phase, setPhase] = useState("upload");
-  const [images, setImages] = useState([]);
-  const [battles, setBattles] = useState([]);
-  const [currentBattleIndex, setCurrentBattleIndex] = useState(0);
+  const [sortState, setSortState] = useState(null);
+  const [imageCount, setImageCount] = useState(0);
 
-  // Called when the user confirms their image selection on the upload screen.
-  // Generates the full battle list and transitions to the battling phase.
-  const handleImagesSelected = useCallback((selectedImages) => {
-    const pairs = generateAllPairs(selectedImages);
-    setImages(selectedImages);
-    setBattles(pairs);
-    setCurrentBattleIndex(0);
-    setPhase("battling");
+  // Initialises the merge-sort state from the uploaded images and begins battling.
+  const handleImagesSelected = useCallback((images) => {
+    const state = initSortState(images);
+    setImageCount(images.length);
+    setSortState(state);
+    setPhase(state.done ? "results" : "battling");
   }, []);
 
-  // Called after each battle with the outcome ("fighter1", "fighter2", or "tie").
-  // Records the result on the current battle, then either advances to the next
-  // battle or transitions to the results phase if all battles are done.
-  const handleBattleResult = useCallback((result) => {
-    setBattles(prev => {
-      const updated = [...prev];
-      updated[currentBattleIndex] = { ...updated[currentBattleIndex], result };
-      return updated;
-    });
-    const next = currentBattleIndex + 1;
-    if (next >= battles.length) {
+  // When the sort finishes, transition to results in a separate render cycle
+  // so that sortState and phase are never out of sync.
+  useEffect(() => {
+    if (sortState && sortState.done && phase === "battling") {
       setPhase("results");
-    } else {
-      setCurrentBattleIndex(next);
     }
-  }, [currentBattleIndex, battles.length]);
+  }, [sortState, phase]);
 
-  // Skips remaining battles and goes straight to the results phase,
-  // scoring only the battles that have already been completed.
+  // Records the user's battle choice and advances the sort state.
+  // Phase transition is handled by the useEffect above.
+  const handleBattleResult = useCallback((result) => {
+    setSortState(prev => applyComparison(prev, result));
+  }, []);
+
+  // Ends the battle phase early and shows a partial ranking.
   const handleFinishEarly = useCallback(() => {
     setPhase("results");
   }, []);
 
-  // Clears all session state and returns to the upload screen.
+  // Clears all state and returns to the upload screen.
   const handleReset = useCallback(() => {
-    setImages([]);
-    setBattles([]);
-    setCurrentBattleIndex(0);
+    setSortState(null);
+    setImageCount(0);
     setPhase("upload");
   }, []);
 
@@ -87,26 +186,31 @@ export default function MainLayout() {
     return <ImageUpload onImagesSelected={handleImagesSelected} />;
   }
 
-  if (phase === "battling") {
-    const currentBattle = battles[currentBattleIndex];
-    const fighter1 = images.find(img => img.id === currentBattle.fighter1);
-    const fighter2 = images.find(img => img.id === currentBattle.fighter2);
+  if (phase === "battling" && sortState && sortState.mergeLeft) {
+    const fighter1 = sortState.mergeLeft[sortState.leftIdx];
+    const fighter2 = sortState.mergeRight[sortState.rightIdx];
     return (
       <ImageBattle
         fighter1={fighter1}
         fighter2={fighter2}
         onResult={handleBattleResult}
         onQuit={handleFinishEarly}
-        currentBattle={currentBattleIndex + 1}
-        totalBattles={battles.length}
+        comparisons={sortState.comparisons}
+        pass={sortState.pass}
+        totalPasses={sortState.totalPasses}
+        imageCount={imageCount}
       />
     );
   }
 
-  if (phase === "results") {
-    const completedBattles = battles.filter(b => b.result !== null);
-    const rankings = computeRankings(images, completedBattles);
-    return <RankingResults rankings={rankings} onReset={handleReset} />;
+  if (phase === "results" && sortState) {
+    return (
+      <RankingResults
+        rankings={getRankings(sortState)}
+        isPartial={!sortState.done}
+        onReset={handleReset}
+      />
+    );
   }
 
   return null;
