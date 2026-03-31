@@ -1,38 +1,422 @@
-.App {
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #0f0f0f;
+  color: #fff;
+  min-height: 100vh;
+}
+
+/* ── Upload Screen ─────────────────────────────── */
+
+.upload-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 20px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
+.upload-container h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.upload-subtitle {
+  color: #777;
+  font-size: 1.05rem;
+  margin-bottom: 32px;
+}
+
+.drop-zone {
+  border: 2px dashed #333;
+  border-radius: 14px;
+  padding: 52px 20px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  margin-bottom: 16px;
+}
+
+.drop-zone:hover {
+  border-color: #4a9eff;
+  background: rgba(74, 158, 255, 0.04);
+}
+
+.drop-zone-icon {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+
+.drop-zone p {
+  color: #555;
+  font-size: 1rem;
+}
+
+.demo-btn {
+  background: transparent;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: #666;
+  padding: 8px 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  margin-bottom: 28px;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.demo-btn:hover {
+  border-color: #555;
+  color: #aaa;
+}
+
+.preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.preview-item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #1a1a1a;
+}
+
+.preview-item img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+}
+
+.preview-name {
+  display: block;
+  padding: 4px 8px;
+  font-size: 0.72rem;
+  color: #888;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.remove-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.75);
+  color: #ddd;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.remove-btn:hover {
+  background: rgba(0, 0, 0, 0.95);
+  color: #fff;
+}
+
+.battle-count {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.start-btn {
+  padding: 14px 36px;
+  background: #4a9eff;
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.start-btn:hover {
+  background: #3a8eef;
+}
+
+.start-btn:active {
+  transform: scale(0.98);
+}
+
+.start-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Battle Screen ─────────────────────────────── */
+
+.battle-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.battle-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.battle-counter {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #666;
+  white-space: nowrap;
+  min-width: 110px;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 5px;
+  background: #1e1e1e;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #4a9eff;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.quit-btn {
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+  color: #555;
+  font-size: 0.82rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.quit-btn:hover {
+  border-color: #444;
+  color: #aaa;
+}
+
+.battle-prompt {
+  text-align: center;
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 16px;
+}
+
+.battle-arena {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  flex: 1;
+}
+
+.fighter-btn {
+  flex: 1;
+  background-size: cover;
+  background-position: center;
+  background-color: #111;
+  border: 2px solid #1e1e1e;
+  border-radius: 14px;
+  cursor: pointer;
+  position: relative;
+  min-height: 420px;
+  overflow: hidden;
+  transition: border-color 0.15s, transform 0.1s;
+}
+
+.fighter-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 55%, rgba(0, 0, 0, 0.75));
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.fighter-btn:hover {
+  border-color: #4a9eff;
+  transform: scale(1.015);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.fighter-btn:active {
+  transform: scale(0.99);
+}
+
+.fighter-name {
+  position: absolute;
+  bottom: 18px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+  z-index: 1;
+}
+
+.vs-column {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 18px;
+  min-width: 72px;
 }
 
-.App-link {
-  color: #61dafb;
+.vs-label {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #2a2a2a;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.tie-btn {
+  padding: 10px 14px;
+  background: #161616;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  color: #555;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.tie-btn:hover {
+  border-color: #444;
+  color: #aaa;
+}
+
+/* ── Results Screen ────────────────────────────── */
+
+.results-container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 48px 20px;
+}
+
+.results-container h1 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 32px;
+}
+
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  background: #141414;
+  border-radius: 10px;
+  border-left: 3px solid #222;
+}
+
+.result-item.rank-1 { border-left-color: #ffd700; }
+.result-item.rank-2 { border-left-color: #c0c0c0; }
+.result-item.rank-3 { border-left-color: #cd7f32; }
+
+.rank-number {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #3a3a3a;
+  min-width: 38px;
+}
+
+.result-item.rank-1 .rank-number { color: #ffd700; }
+.result-item.rank-2 .rank-number { color: #c0c0c0; }
+.result-item.rank-3 .rank-number { color: #cd7f32; }
+
+.result-thumbnail {
+  width: 58px;
+  height: 58px;
+  object-fit: cover;
+  border-radius: 6px;
+  background: #1a1a1a;
+}
+
+.result-info {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.result-name {
+  font-size: 0.98rem;
+  font-weight: 600;
+}
+
+.result-score {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.results-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.save-btn {
+  padding: 12px 26px;
+  background: #4a9eff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.93rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.save-btn:hover {
+  background: #3a8eef;
+}
+
+.reset-btn {
+  padding: 12px 26px;
+  background: #161616;
+  color: #777;
+  border: 1px solid #272727;
+  border-radius: 8px;
+  font-size: 0.93rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.reset-btn:hover {
+  background: #1e1e1e;
+  color: #ccc;
 }
