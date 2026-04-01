@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <rect width="300" height="400" fill="#000a12"/>
+  <polygon points="150,30 270,95 270,225 150,290 30,225 30,95" fill="#001a30" stroke="#0066cc" stroke-width="3"/>
+  <polygon points="150,55 248,108 248,212 150,265 52,212 52,108" fill="#002040" stroke="#cc9900" stroke-width="1" opacity="0.5"/>
+  <!-- Alchemy flask motif -->
+  <path d="M138,118 L138,152 L112,192 L188,192 L162,152 L162,118 Z" fill="none" stroke="#0066cc" stroke-width="2" opacity="0.5"/>
+  <line x1="134" y1="118" x2="166" y2="118" stroke="#cc9900" stroke-width="2" opacity="0.6"/>
+  <!-- Liquid level in flask -->
+  <path d="M120,182 L180,182 L172,192 L128,192 Z" fill="#0066cc" opacity="0.2"/>
+  <!-- Bubbles -->
+  <circle cx="145" cy="172" r="4" fill="none" stroke="#cc9900" stroke-width="1.5" opacity="0.5"/>
+  <circle cx="158" cy="162" r="3" fill="none" stroke="#cc9900" stroke-width="1.5" opacity="0.4"/>
+  <circle cx="142" cy="155" r="2" fill="none" stroke="#cc9900" stroke-width="1" opacity="0.4"/>
+  <line x1="60" y1="320" x2="240" y2="320" stroke="#0066cc" stroke-width="1" opacity="0.4"/>
+  <text x="150" y="356" font-family="Arial Black, Arial" font-size="22" fill="#ffffff" text-anchor="middle" font-weight="900" letter-spacing="2">GOTCHARD</text>
+  <text x="150" y="385" font-family="Arial" font-size="12" fill="#cc9900" text-anchor="middle" opacity="0.7" letter-spacing="3">REIWA-05</text>
+</svg>

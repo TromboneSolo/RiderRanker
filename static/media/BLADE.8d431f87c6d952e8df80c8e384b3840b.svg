@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <rect width="300" height="400" fill="#000510"/>
+  <polygon points="150,30 270,95 270,225 150,290 30,225 30,95" fill="#001030" stroke="#0044cc" stroke-width="3"/>
+  <polygon points="150,55 248,108 248,212 150,265 52,212 52,108" fill="#001540" stroke="#aaccff" stroke-width="1" opacity="0.4"/>
+  <!-- Spade suit motif -->
+  <path d="M150,118 C150,118 122,138 122,158 C122,172 132,178 142,174 C138,182 134,192 126,196 L174,196 C166,192 162,182 158,174 C168,178 178,172 178,158 C178,138 150,118 150,118 Z"
+        fill="none" stroke="#0044cc" stroke-width="2" opacity="0.6"/>
+  <path d="M150,124 C150,124 128,142 128,158 C128,168 136,173 144,170 C141,178 138,188 132,192 L168,192 C162,188 159,178 156,170 C164,173 172,168 172,158 C172,142 150,124 150,124 Z"
+        fill="#0044cc" opacity="0.15"/>
+  <text x="150" y="215" font-family="Arial Black, Arial" font-size="110" fill="#0044cc" text-anchor="middle" font-weight="900" opacity="0.08">B</text>
+  <line x1="60" y1="320" x2="240" y2="320" stroke="#0044cc" stroke-width="1" opacity="0.4"/>
+  <text x="150" y="360" font-family="Arial Black, Arial" font-size="32" fill="#ffffff" text-anchor="middle" font-weight="900" letter-spacing="5">BLADE</text>
+  <text x="150" y="385" font-family="Arial" font-size="12" fill="#aaccff" text-anchor="middle" opacity="0.7" letter-spacing="3">HEISEI-05</text>
+</svg>

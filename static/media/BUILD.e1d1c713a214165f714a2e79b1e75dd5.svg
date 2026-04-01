@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <rect width="300" height="400" fill="#030310"/>
+  <!-- Split red/blue design matching Build's half-and-half suit -->
+  <polygon points="150,30 270,95 270,225 150,290 30,225 30,95" fill="#0a0020" stroke="#3355cc" stroke-width="3"/>
+  <clipPath id="buildLeft">
+    <polygon points="30,95 150,30 150,290 30,225"/>
+  </clipPath>
+  <polygon points="150,30 270,95 270,225 150,290 30,225 30,95" fill="#200010" clip-path="url(#buildLeft)"/>
+  <line x1="150" y1="30" x2="150" y2="290" stroke="#ffffff" stroke-width="2" opacity="0.4"/>
+  <text x="150" y="205" font-family="Arial Black, Arial" font-size="110" fill="#3355cc" text-anchor="middle" font-weight="900" opacity="0.15">B</text>
+  <text x="150" y="200" font-family="Arial Black, Arial" font-size="110" fill="none" stroke="#3355cc" stroke-width="2" text-anchor="middle" font-weight="900">B</text>
+  <line x1="60" y1="320" x2="240" y2="320" stroke="#3355cc" stroke-width="1" opacity="0.4"/>
+  <text x="150" y="360" font-family="Arial Black, Arial" font-size="32" fill="#ffffff" text-anchor="middle" font-weight="900" letter-spacing="5">BUILD</text>
+  <text x="150" y="385" font-family="Arial" font-size="12" fill="#3355cc" text-anchor="middle" opacity="0.7" letter-spacing="3">HEISEI-19</text>
+</svg>

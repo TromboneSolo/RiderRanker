@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <rect width="300" height="400" fill="#010a0a"/>
+  <polygon points="150,30 270,95 270,225 150,290 30,225 30,95" fill="#011e1e" stroke="#00cccc" stroke-width="3"/>
+  <polygon points="150,55 248,108 248,212 150,265 52,212 52,108" fill="#012828" stroke="#ff6600" stroke-width="1" opacity="0.5"/>
+  <!-- Z-slash motif — double lightning bolt -->
+  <polyline points="116,118 184,118 116,202 184,202" fill="none" stroke="#00cccc" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" opacity="0.7"/>
+  <polyline points="122,126 178,126 122,194 178,194" fill="none" stroke="#ff6600" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" opacity="0.4"/>
+  <line x1="60" y1="320" x2="240" y2="320" stroke="#00cccc" stroke-width="1" opacity="0.4"/>
+  <text x="150" y="360" font-family="Arial Black, Arial" font-size="32" fill="#ffffff" text-anchor="middle" font-weight="900" letter-spacing="5">ZEZTZ</text>
+  <text x="150" y="385" font-family="Arial" font-size="12" fill="#00cccc" text-anchor="middle" opacity="0.7" letter-spacing="3">REIWA-07</text>
+</svg>
