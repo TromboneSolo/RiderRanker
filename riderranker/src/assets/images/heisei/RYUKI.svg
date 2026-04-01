@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <rect width="300" height="400" fill="#120000"/>
+  <polygon points="150,30 270,95 270,225 150,290 30,225 30,95" fill="#2e0000" stroke="#cc0000" stroke-width="3"/>
+  <polygon points="150,55 248,108 248,212 150,265 52,212 52,108" fill="#3a0000" stroke="#880000" stroke-width="1" opacity="0.5"/>
+  <!-- Dragon scale / mirror card motif -->
+  <rect x="118" y="118" width="64" height="84" rx="6" fill="none" stroke="#cc0000" stroke-width="2" opacity="0.5"/>
+  <rect x="126" y="126" width="48" height="68" rx="4" fill="none" stroke="#ff4444" stroke-width="1" opacity="0.3"/>
+  <!-- Diamond inside -->
+  <polygon points="150,138 168,160 150,182 132,160" fill="none" stroke="#cc0000" stroke-width="2" opacity="0.6"/>
+  <polygon points="150,148 162,160 150,172 138,160" fill="#cc0000" opacity="0.2"/>
+  <text x="150" y="215" font-family="Arial Black, Arial" font-size="110" fill="#cc0000" text-anchor="middle" font-weight="900" opacity="0.08">R</text>
+  <line x1="60" y1="320" x2="240" y2="320" stroke="#cc0000" stroke-width="1" opacity="0.4"/>
+  <text x="150" y="360" font-family="Arial Black, Arial" font-size="32" fill="#ffffff" text-anchor="middle" font-weight="900" letter-spacing="5">RYUKI</text>
+  <text x="150" y="385" font-family="Arial" font-size="12" fill="#cc0000" text-anchor="middle" opacity="0.7" letter-spacing="3">HEISEI-03</text>
+</svg>

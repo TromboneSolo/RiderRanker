@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <rect width="300" height="400" fill="#020a02"/>
+  <!-- Split design: left half black, right half green -->
+  <polygon points="150,30 270,95 270,225 150,290 30,225 30,95" fill="#111111" stroke="#00cc44" stroke-width="3"/>
+  <clipPath id="rightHalf">
+    <polygon points="150,30 270,95 270,225 150,290"/>
+  </clipPath>
+  <polygon points="150,30 270,95 270,225 150,290 30,225 30,95" fill="#003315" clip-path="url(#rightHalf)"/>
+  <line x1="150" y1="30" x2="150" y2="290" stroke="#00cc44" stroke-width="2" opacity="0.6"/>
+  <text x="150" y="205" font-family="Arial Black, Arial" font-size="110" fill="#00cc44" text-anchor="middle" font-weight="900" opacity="0.15">W</text>
+  <text x="150" y="200" font-family="Arial Black, Arial" font-size="110" fill="none" stroke="#00cc44" stroke-width="2" text-anchor="middle" font-weight="900">W</text>
+  <line x1="60" y1="320" x2="240" y2="320" stroke="#00cc44" stroke-width="1" opacity="0.4"/>
+  <text x="150" y="358" font-family="Arial Black, Arial" font-size="24" fill="#ffffff" text-anchor="middle" font-weight="900" letter-spacing="3">DOUBLE</text>
+  <text x="150" y="385" font-family="Arial" font-size="12" fill="#00cc44" text-anchor="middle" opacity="0.7" letter-spacing="3">HEISEI-11</text>
+</svg>

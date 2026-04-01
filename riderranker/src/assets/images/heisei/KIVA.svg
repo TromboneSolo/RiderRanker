@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <rect width="300" height="400" fill="#08000f"/>
+  <polygon points="150,30 270,95 270,225 150,290 30,225 30,95" fill="#1a0033" stroke="#cc0000" stroke-width="3"/>
+  <polygon points="150,55 248,108 248,212 150,265 52,212 52,108" fill="#220044" stroke="#880000" stroke-width="1" opacity="0.5"/>
+  <text x="150" y="205" font-family="Arial Black, Arial" font-size="110" fill="#cc0000" text-anchor="middle" font-weight="900" opacity="0.15">K</text>
+  <text x="150" y="200" font-family="Arial Black, Arial" font-size="110" fill="none" stroke="#cc0000" stroke-width="2" text-anchor="middle" font-weight="900">K</text>
+  <line x1="60" y1="320" x2="240" y2="320" stroke="#cc0000" stroke-width="1" opacity="0.4"/>
+  <text x="150" y="360" font-family="Arial Black, Arial" font-size="36" fill="#ffffff" text-anchor="middle" font-weight="900" letter-spacing="8">KIVA</text>
+  <text x="150" y="385" font-family="Arial" font-size="12" fill="#cc0000" text-anchor="middle" opacity="0.7" letter-spacing="3">HEISEI-09</text>
+</svg>

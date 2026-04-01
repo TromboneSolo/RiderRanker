@@ -1,22 +1,67 @@
 import React, { useState, useCallback } from "react";
-import AGITO from "../assets/images/AGITO.png";
-import BLADE from "../assets/images/BLADE.png";
-import FAIZ from "../assets/images/FAIZ.png";
-import KUUGA from "../assets/images/KUUGA.png";
-import RYUKI from "../assets/images/RYUKI.png";
+import AGITO from "../assets/images/heisei/AGITO.svg";
+import BLADE from "../assets/images/heisei/BLADE.svg";
+import FAIZ from "../assets/images/heisei/FAIZ.svg";
+import KUUGA from "../assets/images/heisei/KUUGA.svg";
+import RYUKI from "../assets/images/heisei/RYUKI.svg";
 import ZERO from "../assets/images/set2/ZERO.svg";
 import PHANTOM from "../assets/images/set2/PHANTOM.svg";
 import TITAN from "../assets/images/set2/TITAN.svg";
 import NOVA from "../assets/images/set2/NOVA.svg";
 import SPECTER from "../assets/images/set2/SPECTER.svg";
+import HIBIKI from "../assets/images/heisei/HIBIKI.svg";
+import KABUTO from "../assets/images/heisei/KABUTO.svg";
+import DENO from "../assets/images/heisei/DEN-O.svg";
+import KIVA from "../assets/images/heisei/KIVA.svg";
+import DECADE from "../assets/images/heisei/DECADE.svg";
+import DOUBLE from "../assets/images/heisei/DOUBLE.svg";
+import OOO from "../assets/images/heisei/OOO.svg";
+import FOURZE from "../assets/images/heisei/FOURZE.svg";
+import WIZARD from "../assets/images/heisei/WIZARD.svg";
+import GAIM from "../assets/images/heisei/GAIM.svg";
+import DRIVE from "../assets/images/heisei/DRIVE.svg";
+import GHOST from "../assets/images/heisei/GHOST.svg";
+import EXAID from "../assets/images/heisei/EX-AID.svg";
+import BUILD from "../assets/images/heisei/BUILD.svg";
+import ZIO from "../assets/images/heisei/ZI-O.svg";
+import ZEROONE from "../assets/images/reiwa/ZERO-ONE.svg";
+import SABER from "../assets/images/reiwa/SABER.svg";
+import REVICE from "../assets/images/reiwa/REVICE.svg";
+import GEATS from "../assets/images/reiwa/GEATS.svg";
+import GOTCHARD from "../assets/images/reiwa/GOTCHARD.svg";
+import GAVV from "../assets/images/reiwa/GAVV.svg";
+import ZEZTZ from "../assets/images/reiwa/ZEZTZ.svg";
 
-// Built-in demo set 1 — Kamen Rider characters
-const DEMO_IMAGES = [
-  { id: "demo_agito", name: "AGITO", src: AGITO },
-  { id: "demo_blade", name: "BLADE", src: BLADE },
-  { id: "demo_faiz", name: "FAIZ", src: FAIZ },
-  { id: "demo_kuuga", name: "KUUGA", src: KUUGA },
-  { id: "demo_ryuki", name: "RYUKI", src: RYUKI },
+
+// Built-in demo set 3 — all Heisei and Reiwa Kamen Riders
+const DEMO_IMAGES_3 = [
+  { id: "demo_kuuga",   name: "KUUGA",   src: KUUGA   },
+  { id: "demo_agito",   name: "AGITO",   src: AGITO   },
+  { id: "demo_ryuki",   name: "RYUKI",   src: RYUKI   },
+  { id: "demo_faiz",    name: "FAIZ",    src: FAIZ    },
+  { id: "demo_blade",   name: "BLADE",   src: BLADE   },
+  { id: "demo_hibiki",  name: "HIBIKI",  src: HIBIKI  },
+  { id: "demo_kabuto",  name: "KABUTO",  src: KABUTO  },
+  { id: "demo_deno",    name: "DEN-O",   src: DENO    },
+  { id: "demo_kiva",    name: "KIVA",    src: KIVA    },
+  { id: "demo_decade",  name: "DECADE",  src: DECADE  },
+  { id: "demo_double",  name: "DOUBLE",  src: DOUBLE  },
+  { id: "demo_ooo",     name: "OOO",     src: OOO     },
+  { id: "demo_fourze",  name: "FOURZE",  src: FOURZE  },
+  { id: "demo_wizard",  name: "WIZARD",  src: WIZARD  },
+  { id: "demo_gaim",    name: "GAIM",    src: GAIM    },
+  { id: "demo_drive",   name: "DRIVE",   src: DRIVE   },
+  { id: "demo_ghost",   name: "GHOST",   src: GHOST   },
+  { id: "demo_exaid",   name: "EX-AID",  src: EXAID   },
+  { id: "demo_build",   name: "BUILD",   src: BUILD   },
+  { id: "demo_zio",     name: "ZI-O",    src: ZIO     },
+  { id: "demo_zeroone", name: "ZERO-ONE", src: ZEROONE},
+  { id: "demo_saber",   name: "SABER",   src: SABER   },
+  { id: "demo_revice",  name: "REVICE",  src: REVICE  },
+  { id: "demo_geats",   name: "GEATS",   src: GEATS   },
+  { id: "demo_gotchard",name: "GOTCHARD",src: GOTCHARD},
+  { id: "demo_gavv",    name: "GAVV",    src: GAVV    },
+  { id: "demo_zeztz",   name: "ZEZTZ",   src: ZEZTZ   },
 ];
 
 // Built-in demo set 2 — Unit fighters
@@ -94,11 +139,11 @@ export default function ImageUpload({ onImagesSelected }) {
       </div>
 
       <div className="demo-btn-row">
-        <button className="demo-btn" onClick={() => setPreviews(DEMO_IMAGES)}>
-          Demo: Kamen Rider
-        </button>
         <button className="demo-btn" onClick={() => setPreviews(DEMO_IMAGES_2)}>
           Demo: Unit Fighters
+        </button>
+        <button className="demo-btn" onClick={() => setPreviews(DEMO_IMAGES_3)}>
+          Demo: Heisei &amp; Reiwa Riders
         </button>
       </div>
 

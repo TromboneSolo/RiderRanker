@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <rect width="300" height="400" fill="#0a0700"/>
+  <polygon points="150,30 270,95 270,225 150,290 30,225 30,95" fill="#2a1800" stroke="#ff8800" stroke-width="3"/>
+  <polygon points="150,55 248,108 248,212 150,265 52,212 52,108" fill="#331e00" stroke="#ffcc44" stroke-width="1" opacity="0.5"/>
+  <!-- Stylised orange/lock motif -->
+  <circle cx="150" cy="160" r="36" fill="none" stroke="#ff8800" stroke-width="2" opacity="0.4"/>
+  <rect x="132" y="148" width="36" height="28" rx="4" fill="none" stroke="#ffcc44" stroke-width="2" opacity="0.4"/>
+  <text x="150" y="205" font-family="Arial Black, Arial" font-size="110" fill="#ff8800" text-anchor="middle" font-weight="900" opacity="0.15">G</text>
+  <text x="150" y="200" font-family="Arial Black, Arial" font-size="110" fill="none" stroke="#ff8800" stroke-width="2" text-anchor="middle" font-weight="900">G</text>
+  <line x1="60" y1="320" x2="240" y2="320" stroke="#ff8800" stroke-width="1" opacity="0.4"/>
+  <text x="150" y="360" font-family="Arial Black, Arial" font-size="36" fill="#ffffff" text-anchor="middle" font-weight="900" letter-spacing="8">GAIM</text>
+  <text x="150" y="385" font-family="Arial" font-size="12" fill="#ff8800" text-anchor="middle" opacity="0.7" letter-spacing="3">HEISEI-15</text>
+</svg>
