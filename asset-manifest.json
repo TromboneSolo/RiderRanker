@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/RiderRanker/static/css/main.19772ccd.css",
-    "main.js": "/RiderRanker/static/js/main.ffab51fb.js",
+    "main.js": "/RiderRanker/static/js/main.89c66c20.js",
     "static/media/geizmajesty.png": "/RiderRanker/static/media/geizmajesty.24b07152f01d1b19bd31.png",
     "static/media/grandzio.png": "/RiderRanker/static/media/grandzio.0aa9bc3259ff6c143467.png",
     "static/media/oumazio.png": "/RiderRanker/static/media/oumazio.0fa40cb1f49b2dbcbc26.png",
@@ -204,10 +204,10 @@
     "static/media/ZERO.svg": "/RiderRanker/static/media/ZERO.d8704da350b8e1f7a9ae88334d9d1ced.svg",
     "index.html": "/RiderRanker/index.html",
     "main.19772ccd.css.map": "/RiderRanker/static/css/main.19772ccd.css.map",
-    "main.ffab51fb.js.map": "/RiderRanker/static/js/main.ffab51fb.js.map"
+    "main.89c66c20.js.map": "/RiderRanker/static/js/main.89c66c20.js.map"
   },
   "entrypoints": [
     "static/css/main.19772ccd.css",
-    "static/js/main.ffab51fb.js"
+    "static/js/main.89c66c20.js"
   ]
 }
