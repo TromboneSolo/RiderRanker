@@ -479,12 +479,12 @@ export default function ImageUpload({ onImagesSelected }) {
       </div>
 
       <div className="demo-btn-row">
-        <button className="demo-btn" onClick={() => setPreviews(DEMO_IMAGES_2)}>
+        {/* <button className="demo-btn" onClick={() => setPreviews(DEMO_IMAGES_2)}>
           Demo: Unit Fighters
-        </button>
-        <button className="demo-btn" onClick={() => setPreviews(DEMO_IMAGES_3)}>
+        </button> */}
+        {/* <button className="demo-btn" onClick={() => setPreviews(DEMO_IMAGES_3)}>
           Demo: Heisei &amp; Reiwa Riders
-        </button>
+        </button> */}
         <button className="demo-btn" onClick={() => setPreviews(DEMO_IMAGES_4)}>
           Demo: Ridewatches
         </button>
