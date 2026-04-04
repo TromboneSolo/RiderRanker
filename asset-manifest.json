@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/RiderRanker/static/css/main.5e923365.css",
-    "main.js": "/RiderRanker/static/js/main.51df70d2.js",
+    "main.js": "/RiderRanker/static/js/main.214cec33.js",
     "static/media/geizmajesty.png": "/RiderRanker/static/media/geizmajesty.24b07152f01d1b19bd31.png",
     "static/media/grandzio.png": "/RiderRanker/static/media/grandzio.0aa9bc3259ff6c143467.png",
     "static/media/oumazio.png": "/RiderRanker/static/media/oumazio.0fa40cb1f49b2dbcbc26.png",
@@ -18,7 +18,6 @@
     "static/media/v3.png": "/RiderRanker/static/media/v3.ab05b04aab6b709a6e07.png",
     "static/media/super1.png": "/RiderRanker/static/media/super1.f5540ba98b34c4f6e5e3.png",
     "static/media/gavv.png": "/RiderRanker/static/media/gavv.49c681259f32ccf3a479.png",
-    "static/media/mirrorzio.png": "/RiderRanker/static/media/mirrorzio.561aeb3d9ee4eefdef90.png",
     "static/media/zeroone.png": "/RiderRanker/static/media/zeroone.c9c7c98bca13a811faf6.png",
     "static/media/zeztz.png": "/RiderRanker/static/media/zeztz.f39ff8e2a4e89ab2f296.png",
     "static/media/ziotrinity.png": "/RiderRanker/static/media/ziotrinity.05340931e2e17c0c0cad.png",
@@ -54,7 +53,6 @@
     "static/media/buildhazard.png": "/RiderRanker/static/media/buildhazard.23d40507b1add3e9c925.png",
     "static/media/ryukisurvive.png": "/RiderRanker/static/media/ryukisurvive.46e49e569c8348c408e9.png",
     "static/media/woz.png": "/RiderRanker/static/media/woz.57d0ea851091d22b1c43.png",
-    "static/media/wozmemo.png": "/RiderRanker/static/media/wozmemo.57d0ea851091d22b1c43.png",
     "static/media/diend.png": "/RiderRanker/static/media/diend.84d3d07f864810737188.png",
     "static/media/kivaemperor.png": "/RiderRanker/static/media/kivaemperor.3df586a03614c7b641b9.png",
     "static/media/decadecomplete.png": "/RiderRanker/static/media/decadecomplete.6699d1c252cb12a279a2.png",
@@ -204,10 +202,10 @@
     "static/media/ZERO.svg": "/RiderRanker/static/media/ZERO.d8704da350b8e1f7a9ae88334d9d1ced.svg",
     "index.html": "/RiderRanker/index.html",
     "main.5e923365.css.map": "/RiderRanker/static/css/main.5e923365.css.map",
-    "main.51df70d2.js.map": "/RiderRanker/static/js/main.51df70d2.js.map"
+    "main.214cec33.js.map": "/RiderRanker/static/js/main.214cec33.js.map"
   },
   "entrypoints": [
     "static/css/main.5e923365.css",
-    "static/js/main.51df70d2.js"
+    "static/js/main.214cec33.js"
   ]
 }
