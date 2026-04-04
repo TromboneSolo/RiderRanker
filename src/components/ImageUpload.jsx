@@ -416,8 +416,38 @@ const DEMO_IMAGES_2 = [
 // Lets the user build their image set before starting the ranking session.
 // Accepts a FileList (from the file picker or drag-and-drop), reads each file
 // as a base64 data URL, and appends it to the preview grid.
-export default function ImageUpload({ onImagesSelected }) {
+// Parses an exported JSON rankings file ({ rank, name, image }[]) into the
+// internal format ({ id, name, src }[]) sorted by rank.
+function parseJSONRankings(text) {
+  const data = JSON.parse(text);
+  if (!Array.isArray(data)) throw new Error("Expected a JSON array");
+  return data
+    .slice()
+    .sort((a, b) => a.rank - b.rank)
+    .map((item, i) => ({
+      id: `imported_${i}`,
+      name: item.name || `Item ${i + 1}`,
+      src: item.image || "",
+    }));
+}
+
+// Parses an exported CSV rankings file (Rank,Name header + rows) into the
+// internal format ({ id, name, src }[]) sorted by rank.
+function parseCSVRankings(text) {
+  const lines = text.trim().split("\n").slice(1); // skip header
+  return lines
+    .map((line, i) => {
+      const comma = line.indexOf(",");
+      const rank = parseInt(line.slice(0, comma), 10);
+      const name = line.slice(comma + 1).replace(/^"|"$/g, "");
+      return { rank, name, id: `imported_${i}`, src: "" };
+    })
+    .sort((a, b) => a.rank - b.rank);
+}
+
+export default function ImageUpload({ onImagesSelected, onRankingsLoaded, hasSavedSession, onResume }) {
   const [previews, setPreviews] = useState([]);
+  const [isRidewatchDemo, setIsRidewatchDemo] = useState(false);
 
   // Filters a FileList down to image files, reads each one asynchronously
   // with FileReader, and appends the resolved objects to the previews array.
@@ -434,6 +464,7 @@ export default function ImageUpload({ onImagesSelected }) {
         reader.readAsDataURL(file);
       })
     );
+    setIsRidewatchDemo(false);
     Promise.all(readers).then(images =>
       setPreviews(prev => [...prev, ...images])
     );
@@ -448,6 +479,24 @@ export default function ImageUpload({ onImagesSelected }) {
 
   // Removes a single image from the preview list by its id.
   const removeImage = (id) => setPreviews(prev => prev.filter(img => img.id !== id));
+
+  // Reads a dropped or selected JSON/CSV rankings file and passes the parsed
+  // list directly to onRankingsLoaded, skipping the battle phase entirely.
+  const handleRankingsFile = useCallback((file) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const text = e.target.result;
+        const rankings = file.name.endsWith(".csv")
+          ? parseCSVRankings(text)
+          : parseJSONRankings(text);
+        onRankingsLoaded(rankings);
+      } catch (err) {
+        alert("Could not parse rankings file: " + err.message);
+      }
+    };
+    reader.readAsText(file);
+  }, [onRankingsLoaded]);
 
   const n = previews.length;
   const battleCount = Math.round(n * (n - 1) / 2);
@@ -478,6 +527,26 @@ export default function ImageUpload({ onImagesSelected }) {
         />
       </div>
 
+      {hasSavedSession && (
+        <div className="resume-banner">
+          <span>You have a saved session.</span>
+          <button className="resume-btn" onClick={onResume}>Resume</button>
+        </div>
+      )}
+
+      <div className="import-rankings-row">
+        <label className="import-rankings-label">
+          View saved rankings:
+          <input
+            type="file"
+            accept=".json,.csv"
+            style={{ display: "none" }}
+            onChange={(e) => { if (e.target.files[0]) handleRankingsFile(e.target.files[0]); }}
+          />
+          <span className="import-rankings-btn">Import JSON / CSV</span>
+        </label>
+      </div>
+
       <div className="demo-btn-row">
         {/* <button className="demo-btn" onClick={() => setPreviews(DEMO_IMAGES_2)}>
           Demo: Unit Fighters
@@ -485,7 +554,7 @@ export default function ImageUpload({ onImagesSelected }) {
         {/* <button className="demo-btn" onClick={() => setPreviews(DEMO_IMAGES_3)}>
           Demo: Heisei &amp; Reiwa Riders
         </button> */}
-        <button className="demo-btn" onClick={() => setPreviews(DEMO_IMAGES_4)}>
+        <button className="demo-btn" onClick={() => { setPreviews(DEMO_IMAGES_4); setIsRidewatchDemo(true); }}>
           Demo: Ridewatches
         </button>
       </div>
@@ -508,7 +577,7 @@ export default function ImageUpload({ onImagesSelected }) {
 
           <button
             className="start-btn"
-            onClick={() => onImagesSelected(previews)}
+            onClick={() => onImagesSelected(previews, isRidewatchDemo)}
             disabled={previews.length < 2}
           >
             Start Ranking

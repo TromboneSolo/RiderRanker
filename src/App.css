@@ -58,6 +58,94 @@ body {
   font-size: 1rem;
 }
 
+.resume-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-content: center;
+  background: #0d1f0d;
+  border: 1px solid #1a4a1a;
+  border-radius: 10px;
+  padding: 12px 20px;
+  margin-bottom: 20px;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.resume-btn {
+  padding: 7px 18px;
+  background: #00cc44;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.resume-btn:hover {
+  background: #00ff55;
+}
+
+.save-progress-btn {
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+  color: #555;
+  font-size: 0.82rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.save-progress-btn:hover {
+  border-color: #00cc44;
+  color: #00cc44;
+}
+
+.save-status {
+  font-size: 0.82rem;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 6px 14px;
+}
+
+.save-status--saved  { color: #00cc44; }
+.save-status--failed { color: #cc3333; }
+
+.import-rankings-row {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.import-rankings-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #666;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.import-rankings-btn {
+  padding: 7px 18px;
+  background: transparent;
+  border: 1px solid #444;
+  border-radius: 8px;
+  color: #aaa;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.import-rankings-label:hover .import-rankings-btn {
+  border-color: #888;
+  color: #ddd;
+}
+
 .demo-btn-row {
   display: flex;
   gap: 10px;
@@ -309,6 +397,23 @@ body {
   color: #2a2a2a;
 }
 
+.random-btn {
+  padding: 10px 14px;
+  background: #161616;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  color: #888;
+  font-size: 0.8rem;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.random-btn:hover {
+  border-color: #4a9eff;
+  color: #4a9eff;
+}
+
 .tie-btn {
   padding: 10px 14px;
   background: #161616;
@@ -339,6 +444,71 @@ body {
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 32px;
+}
+
+.comparison-loading {
+  text-align: center;
+  color: #555;
+  font-size: 0.88rem;
+  margin: 20px 0;
+}
+
+.comparison-section {
+  margin: 28px 0;
+}
+
+.comparison-section h2 {
+  font-size: 1rem;
+  color: #888;
+  font-weight: 500;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.comparison-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.comparison-card {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 14px 18px;
+  min-width: 160px;
+  max-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.comparison-card--match {
+  border-color: #00cc44;
+}
+
+.comparison-card--diff {
+  border-color: #cc4400;
+}
+
+.comparison-label {
+  font-size: 0.75rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.comparison-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #eee;
+  word-break: break-word;
+}
+
+.comparison-sub {
+  font-size: 0.78rem;
+  color: #888;
 }
 
 .results-list {
@@ -417,6 +587,43 @@ body {
   background: #3a8eef;
 }
 
+.submit-btn {
+  padding: 12px 26px;
+  background: #161616;
+  color: #00cc44;
+  border: 1px solid #00cc44;
+  border-radius: 8px;
+  font-size: 0.93rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.submit-btn:hover {
+  background: #0a1f0a;
+}
+
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.stats-btn {
+  padding: 12px 26px;
+  background: #161616;
+  color: #cc9900;
+  border: 1px solid #cc9900;
+  border-radius: 8px;
+  font-size: 0.93rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.stats-btn:hover {
+  background: #221a00;
+}
+
 .reset-btn {
   padding: 12px 26px;
   background: #161616;
@@ -428,6 +635,90 @@ body {
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
+
+/* ── Submission status banner ──────────────────────────────── */
+
+.submission-status {
+  text-align: center;
+  font-size: 0.85rem;
+  padding: 8px 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.submission-status--pending { color: #888; background: #1a1a1a; }
+.submission-status--ok      { color: #00cc44; background: #0a1f0a; }
+.submission-status--err     { color: #cc3333; background: #1f0a0a; }
+.submission-status--skip    { color: #666; background: #141414; }
+
+/* ── Global Stats screen ───────────────────────────────────── */
+
+.stats-container {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 48px 20px;
+}
+
+.stats-container h1 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.stats-summary {
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 28px;
+}
+
+.stats-notice {
+  text-align: center;
+  color: #666;
+  margin: 24px 0;
+}
+
+.stats-error { color: #cc3333; }
+
+.stats-table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 8px;
+}
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.stats-table th {
+  text-align: left;
+  padding: 10px 14px;
+  color: #555;
+  font-weight: 600;
+  border-bottom: 1px solid #1e1e1e;
+  white-space: nowrap;
+}
+
+.stats-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #111;
+  color: #ccc;
+}
+
+.stats-table tbody tr:hover { background: #141414; }
+
+.stats-row-top td { font-weight: 600; }
+.stats-row-1 .stats-pos { color: #ffd700; }
+.stats-row-2 .stats-pos { color: #c0c0c0; }
+.stats-row-3 .stats-pos { color: #cd7f32; }
+
+.stats-pos   { color: #444; white-space: nowrap; }
+.stats-name  { color: #fff; }
+.stats-avg   { color: #4a9eff; font-variant-numeric: tabular-nums; }
+.stats-count { color: #777; font-variant-numeric: tabular-nums; }
+.stats-first { color: #cc9900; font-variant-numeric: tabular-nums; }
 
 .reset-btn:hover {
   background: #1e1e1e;

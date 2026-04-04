@@ -3,8 +3,8 @@
 // Progress is shown as pass X of Y with a comparison counter.
 import React from "react";
 
-export default function ImageBattle({ fighter1, fighter2, onResult, onQuit,
-                                      comparisons, pass, totalPasses, imageCount }) {
+export default function ImageBattle({ fighter1, fighter2, onResult, onQuit, onSave,
+                                      comparisons, pass, totalPasses, imageCount, saveStatus }) {
   // Progress bar fills based on completed passes; each pass is roughly equal work.
   const progressPct = Math.round(((pass - 1) / totalPasses) * 100);
 
@@ -23,6 +23,14 @@ export default function ImageBattle({ fighter1, fighter2, onResult, onQuit,
         <div className="progress-bar">
           <div className="progress-fill" style={{ width: `${progressPct}%` }} />
         </div>
+        {/* Shows "Saved!" or "Failed" briefly after a save attempt, then reverts to the button */}
+        {saveStatus ? (
+          <span className={`save-status save-status--${saveStatus}`}>
+            {saveStatus === "saved" ? "Saved!" : "Save failed"}
+          </span>
+        ) : (
+          <button className="save-progress-btn" onClick={onSave}>Save</button>
+        )}
         <button className="quit-btn" onClick={onQuit}>Finish Early</button>
       </div>
 
@@ -39,6 +47,10 @@ export default function ImageBattle({ fighter1, fighter2, onResult, onQuit,
 
         <div className="vs-column">
           <span className="vs-label">VS</span>
+          {/* Randomly picks fighter1 or fighter2 with equal probability */}
+          <button className="random-btn" onClick={() => onResult(Math.random() < 0.5 ? "fighter1" : "fighter2")}>
+            Random
+          </button>
           <button className="tie-btn" onClick={() => onResult("tie")}>
             Tie / Skip
           </button>
