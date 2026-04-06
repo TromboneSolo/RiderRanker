@@ -4,16 +4,16 @@ import { APPS_SCRIPT_URL } from "../config";
 
 // Fetches and displays aggregated global ranking stats from the Apps Script
 // endpoint. Shows a leaderboard sorted by average rank across all sessions.
-export default function StatsView({ onBack }) {
+export default function StatsView({ onBack, url }) {
   const [stats, setStats] = useState(null);   // null = loading, object = loaded
   const [error, setError] = useState(null);
 
   // Fetch stats once on mount.
   useEffect(() => {
-    fetchStats()
+    fetchStats(url)
       .then(setStats)
       .catch(err => setError(err.message));
-  }, []);
+  }, [url]);
 
   if (!APPS_SCRIPT_URL) {
     return (

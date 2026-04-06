@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import { APPS_SCRIPT_URL, APPS_SCRIPT_URL_RIDERS } from "../config";
 import AGITO from "../assets/images/heisei/AGITO.svg";
 import BLADE from "../assets/images/heisei/BLADE.svg";
 import FAIZ from "../assets/images/heisei/FAIZ.svg";
@@ -31,7 +32,6 @@ import GEATS from "../assets/images/reiwa/GEATS.svg";
 import GOTCHARD from "../assets/images/reiwa/GOTCHARD.svg";
 import GAVV from "../assets/images/reiwa/GAVV.svg";
 import ZEZTZ from "../assets/images/reiwa/ZEZTZ.svg";
-import W_BibiruRidewatch from "../assets/images/watches/Bibiru_Ridewatch.png";
 import W_J from "../assets/images/watches/J.png";
 import W_ZO from "../assets/images/watches/ZO.png";
 import W_accel from "../assets/images/watches/accel.png";
@@ -142,7 +142,6 @@ import W_mach from "../assets/images/watches/mach.png";
 import W_madrogue from "../assets/images/watches/madrogue.png";
 import W_meteor from "../assets/images/watches/meteor.png";
 import W_meteorstorm from "../assets/images/watches/meteorstorm.png";
-import W_mirrorzio from "../assets/images/watches/mirrorzio.png";
 import W_necrom from "../assets/images/watches/necrom.png";
 import W_nigou from "../assets/images/watches/nigou.png";
 import W_ooo from "../assets/images/watches/ooo.png";
@@ -160,7 +159,6 @@ import W_rogue from "../assets/images/watches/rogue.png";
 import W_ryugen from "../assets/images/watches/ryugen.png";
 import W_ryuki from "../assets/images/watches/ryuki.png";
 import W_ryukisurvive from "../assets/images/watches/ryukisurvive.png";
-import W_ryusoulger from "../assets/images/watches/ryusoulger.png";
 import W_saber from "../assets/images/watches/saber.png";
 import W_scissors from "../assets/images/watches/scissors.png";
 import W_shadowmoon from "../assets/images/watches/shadowmoon.png";
@@ -184,7 +182,6 @@ import W_wizardalldragon from "../assets/images/watches/wizardalldragon.png";
 import W_wizardinfinity from "../assets/images/watches/wizardinfinity.png";
 import W_woz from "../assets/images/watches/woz.png";
 import W_wozginga from "../assets/images/watches/wozginga.png";
-import W_wozmemo from "../assets/images/watches/wozmemo.png";
 import W_wozwatch from "../assets/images/watches/wozwatch.png";
 import W_x from "../assets/images/watches/x.png";
 import W_zamonas from "../assets/images/watches/zamonas.png";
@@ -203,7 +200,6 @@ import W_zx from "../assets/images/watches/zx.png";
 
 // Built-in demo set 4 — Ridewatch images (168 watches from Zi-O)
 const DEMO_IMAGES_4 = [
-  { id: "w_bibiru",             name: "Bibiru Ridewatch",      src: W_BibiruRidewatch    },
   { id: "w_j",                  name: "J",                     src: W_J                  },
   { id: "w_zo",                 name: "ZO",                    src: W_ZO                 },
   { id: "w_accel",              name: "Accel",                 src: W_accel              },
@@ -314,7 +310,6 @@ const DEMO_IMAGES_4 = [
   { id: "w_madrogue",           name: "Mad Rogue",             src: W_madrogue           },
   { id: "w_meteor",             name: "Meteor",                src: W_meteor             },
   { id: "w_meteorstorm",        name: "Meteor Storm",          src: W_meteorstorm        },
-  { id: "w_mirrorzio",          name: "Mirror Zio",            src: W_mirrorzio          },
   { id: "w_necrom",             name: "Necrom",                src: W_necrom             },
   { id: "w_nigou",              name: "Nigou",                 src: W_nigou              },
   { id: "w_ooo",                name: "OOO",                   src: W_ooo                },
@@ -332,7 +327,6 @@ const DEMO_IMAGES_4 = [
   { id: "w_ryugen",             name: "Ryugen",                src: W_ryugen             },
   { id: "w_ryuki",              name: "Ryuki",                 src: W_ryuki              },
   { id: "w_ryukisurvive",       name: "Ryuki Survive",         src: W_ryukisurvive       },
-  { id: "w_ryusoulger",         name: "Ryusoulger",            src: W_ryusoulger         },
   { id: "w_saber",              name: "Saber",                 src: W_saber              },
   { id: "w_scissors",           name: "Scissors",              src: W_scissors           },
   { id: "w_shadowmoon",         name: "Shadow Moon",           src: W_shadowmoon         },
@@ -356,7 +350,6 @@ const DEMO_IMAGES_4 = [
   { id: "w_wizardinfinity",     name: "Wizard Infinity",       src: W_wizardinfinity     },
   { id: "w_woz",                name: "Woz",                   src: W_woz                },
   { id: "w_wozginga",           name: "Woz Ginga",             src: W_wozginga           },
-  { id: "w_wozmemo",            name: "Woz Memo",              src: W_wozmemo            },
   { id: "w_wozwatch",           name: "Woz Watch",             src: W_wozwatch           },
   { id: "w_x",                  name: "X",                     src: W_x                  },
   { id: "w_zamonas",            name: "Zamonas",               src: W_zamonas            },
@@ -447,7 +440,7 @@ function parseCSVRankings(text) {
 
 export default function ImageUpload({ onImagesSelected, onRankingsLoaded, hasSavedSession, onResume }) {
   const [previews, setPreviews] = useState([]);
-  const [isRidewatchDemo, setIsRidewatchDemo] = useState(false);
+  const [demoStatsUrl, setDemoStatsUrl] = useState(null);
 
   // Filters a FileList down to image files, reads each one asynchronously
   // with FileReader, and appends the resolved objects to the previews array.
@@ -464,7 +457,7 @@ export default function ImageUpload({ onImagesSelected, onRankingsLoaded, hasSav
         reader.readAsDataURL(file);
       })
     );
-    setIsRidewatchDemo(false);
+    setDemoStatsUrl(null);
     Promise.all(readers).then(images =>
       setPreviews(prev => [...prev, ...images])
     );
@@ -551,10 +544,10 @@ export default function ImageUpload({ onImagesSelected, onRankingsLoaded, hasSav
         {/* <button className="demo-btn" onClick={() => setPreviews(DEMO_IMAGES_2)}>
           Demo: Unit Fighters
         </button> */}
-        {/* <button className="demo-btn" onClick={() => setPreviews(DEMO_IMAGES_3)}>
+        <button className="demo-btn" onClick={() => { setPreviews(DEMO_IMAGES_3); setDemoStatsUrl(APPS_SCRIPT_URL_RIDERS); }}>
           Demo: Heisei &amp; Reiwa Riders
-        </button> */}
-        <button className="demo-btn" onClick={() => { setPreviews(DEMO_IMAGES_4); setIsRidewatchDemo(true); }}>
+        </button>
+        <button className="demo-btn" onClick={() => { setPreviews(DEMO_IMAGES_4); setDemoStatsUrl(APPS_SCRIPT_URL); }}>
           Demo: Ridewatches
         </button>
       </div>
@@ -577,7 +570,7 @@ export default function ImageUpload({ onImagesSelected, onRankingsLoaded, hasSav
 
           <button
             className="start-btn"
-            onClick={() => onImagesSelected(previews, isRidewatchDemo)}
+            onClick={() => onImagesSelected(previews, demoStatsUrl)}
             disabled={previews.length < 2}
           >
             Start Ranking

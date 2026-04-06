@@ -57,7 +57,7 @@ export default function RankingResults({ rankings, isPartial, onReset, onViewSta
       )}
 
       {comparisonReady && !comparisonStats && (
-        <p className="comparison-loading">No global data to compare against yet.</p>
+        <p className="comparison-loading">No matching global data to compare against yet.</p>
       )}
 
       {comparisonReady && comparisonStats && (

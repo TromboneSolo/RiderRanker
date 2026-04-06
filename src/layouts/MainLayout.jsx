@@ -4,6 +4,7 @@ import ImageBattle from "../components/ImageBattle";
 import RankingResults from "../components/RankingResults";
 import StatsView from "../components/StatsView";
 import { submitRanking, fetchStats } from "../services/globalStats";
+import { APPS_SCRIPT_URL, APPS_SCRIPT_URL_RIDERS } from "../config";
 
 // ---------------------------------------------------------------------------
 // Merge-sort state machine
@@ -126,6 +127,15 @@ function getRankings(sortState) {
   ];
 }
 
+// Randomly resolves all remaining comparisons in one shot, returning a done state.
+function randomFinish(state) {
+  let s = state;
+  while (!s.done) {
+    s = applyComparison(s, Math.random() < 0.5 ? "fighter1" : "fighter2");
+  }
+  return s;
+}
+
 // Generates a short unique ID for each ranking session.
 function generateSessionId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2);
@@ -184,7 +194,7 @@ function computeComparison(userRankings, globalData) {
     })
     .filter(Boolean);
 
-  if (overlapping.length < 3) return null;
+  if (overlapping.length < 1) return null;
 
   const sameTopPick = userRankings[0]?.name === globalData.rankings[0]?.name;
 
@@ -234,33 +244,35 @@ export default function MainLayout() {
   const [saveStatus, setSaveStatus] = useState(null);       // "saved" | "failed" | null
   const [submissionStatus, setSubmissionStatus] = useState(null); // "submitting" | "submitted" | "failed" | "skipped" | null
   const [importedRankings, setImportedRankings] = useState(null);
-  const [isRidewatchDemo, setIsRidewatchDemo] = useState(false);
+  const [activeStatsUrl, setActiveStatsUrl] = useState(null);
   const [comparisonStats, setComparisonStats] = useState(null);
   const [comparisonReady, setComparisonReady] = useState(false);
+  const [sortHistory, setSortHistory] = useState([]);
 
   // Fetch global stats and compute comparison whenever the results phase is entered.
   useEffect(() => {
     if (phase !== "results") return;
     setComparisonReady(false);
     setComparisonStats(null);
-    fetchStats()
+    fetchStats(activeStatsUrl || undefined)
       .then(globalData => {
         const userRankings = importedRankings || (sortState ? getRankings(sortState) : null);
-        if (userRankings) setComparisonStats(computeComparison(userRankings, globalData));
+        const result = userRankings ? computeComparison(userRankings, globalData) : null;
+        setComparisonStats(result);
       })
-      .catch((err) => { console.warn("Comparison fetch failed:", err); })
+      .catch((err) => { console.warn("[comparison] fetch failed:", err); })
       .finally(() => setComparisonReady(true));
   }, [phase]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Initialises the merge-sort state from the uploaded images and begins battling.
-  const handleImagesSelected = useCallback((images, ridewatchDemo = false) => {
+  const handleImagesSelected = useCallback((images, statsUrl = null) => {
     const state = initSortState(images);
     const id = generateSessionId();
     setImageCount(images.length);
     setSortState(state);
     setSessionId(id);
     setSubmissionStatus(null);
-    setIsRidewatchDemo(ridewatchDemo);
+    setActiveStatsUrl(statsUrl);
     setPhase(state.done ? "results" : "battling");
   }, []);
 
@@ -278,17 +290,29 @@ export default function MainLayout() {
     if (!rankings) return;
     const id = sessionId || `imported_${Date.now()}`;
     setSubmissionStatus("submitting");
-    submitRanking(id, rankings).then(result => {
+    submitRanking(id, rankings, activeStatsUrl || undefined).then(result => {
       if (result.skipped)        setSubmissionStatus("skipped");
       else if (result.duplicate) setSubmissionStatus("submitted");
       else if (result.success)   setSubmissionStatus("submitted");
       else                       setSubmissionStatus("failed");
     });
-  }, [sortState, importedRankings, sessionId]);
+  }, [sortState, importedRankings, sessionId, activeStatsUrl]);
 
   // Records the user's battle choice and advances the sort state.
   const handleBattleResult = useCallback((result) => {
-    setSortState(prev => applyComparison(prev, result));
+    setSortState(prev => {
+      setSortHistory(h => [...h, prev]);
+      return applyComparison(prev, result);
+    });
+  }, []);
+
+  // Reverts to the sort state before the last comparison.
+  const handleUndo = useCallback(() => {
+    setSortHistory(h => {
+      if (h.length === 0) return h;
+      setSortState(h[h.length - 1]);
+      return h.slice(0, -1);
+    });
   }, []);
 
   // Saves the current session to localStorage and shows brief feedback.
@@ -315,10 +339,15 @@ export default function MainLayout() {
     setPhase("results");
   }, []);
 
+  // Randomly resolves all remaining comparisons and jumps straight to results.
+  const handleRandomFinish = useCallback(() => {
+    setSortState(prev => randomFinish(prev));
+  }, []);
+
   // Accepts a pre-ranked list from an imported JSON/CSV file and jumps straight to results.
   const handleRankingsLoaded = useCallback((rankings) => {
     setImportedRankings(rankings);
-    setIsRidewatchDemo(false);
+    setActiveStatsUrl(null);
     setSubmissionStatus(null);
     setPhase("results");
   }, []);
@@ -327,8 +356,9 @@ export default function MainLayout() {
   const handleReset = useCallback(() => {
     clearSession();
     setSortState(null);
+    setSortHistory([]);
     setImportedRankings(null);
-    setIsRidewatchDemo(false);
+    setActiveStatsUrl(null);
     setComparisonStats(null);
     setComparisonReady(false);
     setImageCount(0);
@@ -359,6 +389,9 @@ export default function MainLayout() {
         onResult={handleBattleResult}
         onSave={handleSave}
         onQuit={handleFinishEarly}
+        onUndo={handleUndo}
+        canUndo={sortHistory.length > 0}
+        onRandomFinish={handleRandomFinish}
         comparisons={sortState.comparisons}
         pass={sortState.pass}
         totalPasses={sortState.totalPasses}
@@ -376,7 +409,7 @@ export default function MainLayout() {
         isPartial={sortState ? !sortState.done : false}
         onReset={handleReset}
         onViewStats={() => setPhase("stats")}
-        onSubmit={importedRankings || isRidewatchDemo ? handleSubmitResults : null}
+        onSubmit={importedRankings || activeStatsUrl ? handleSubmitResults : null}
         submissionStatus={submissionStatus}
         comparisonStats={comparisonStats}
         comparisonReady={comparisonReady}
@@ -385,7 +418,7 @@ export default function MainLayout() {
   }
 
   if (phase === "stats") {
-    return <StatsView onBack={() => setPhase("results")} />;
+    return <StatsView url={activeStatsUrl || undefined} onBack={() => setPhase("results")} />;
   }
 
   return null;

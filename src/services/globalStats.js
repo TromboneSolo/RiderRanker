@@ -9,8 +9,9 @@ const SUBMITTED_KEY = "riderranker_submitted";
 // from script.google.com to script.googleusercontent.com, which blocks a normal
 // CORS fetch. With no-cors the browser still sends the request and the script
 // still receives and processes it — we just can't read the response.
-export function submitRanking(sessionId, rankings) {
-  if (!APPS_SCRIPT_URL) return Promise.resolve({ skipped: true });
+// An optional url parameter overrides the default APPS_SCRIPT_URL.
+export function submitRanking(sessionId, rankings, url = APPS_SCRIPT_URL) {
+  if (!url) return Promise.resolve({ skipped: true });
 
   // Guard against double-submission on page refresh
   const submitted = getSubmittedIds();
@@ -23,7 +24,7 @@ export function submitRanking(sessionId, rankings) {
     rankings: rankings.map((img, i) => ({ rank: i + 1, name: img.name })),
   };
 
-  return fetch(APPS_SCRIPT_URL, {
+  return fetch(url, {
     method: "POST",
     mode: "no-cors",
     headers: { "Content-Type": "application/json" },
@@ -38,9 +39,9 @@ export function submitRanking(sessionId, rankings) {
 
 // Fetches aggregated global stats from the Apps Script endpoint via GET.
 // Returns a promise resolving to { totalSessions, rankings: [...] }.
-export function fetchStats() {
-  if (!APPS_SCRIPT_URL) return Promise.reject(new Error("No Apps Script URL configured."));
-  return fetch(`${APPS_SCRIPT_URL}?action=stats`)
+export function fetchStats(url = APPS_SCRIPT_URL) {
+  if (!url) return Promise.reject(new Error("No Apps Script URL configured."));
+  return fetch(`${url}?action=stats`)
     .then(r => {
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       return r.json();
