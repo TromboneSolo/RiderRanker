@@ -1,7 +1,7 @@
 // Renders a single head-to-head comparison between two images.
 // The user clicks the image they prefer (or "Tie") to record a result.
 // Progress is shown as pass X of Y with a comparison counter.
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 // Plays a short beep using the Web Audio API.
 function playBeep() {
@@ -24,13 +24,13 @@ export default function ImageBattle({ fighter1, fighter2, onResult, onQuit, onSa
                                       comparisons, pass, totalPasses, imageCount, saveStatus }) {
   const [floatAnim, setFloatAnim] = useState(null); // { side: "left"|"right", id: number }
 
-  const handlePick = (fighter) => {
+  const handlePick = useCallback((fighter) => {
     playBeep();
     if (fighter !== "tie") {
       setFloatAnim({ side: fighter === "fighter1" ? "left" : "right", id: Date.now() });
     }
     onResult(fighter);
-  };
+  }, [onResult]);
 
   useEffect(() => {
     const handleKey = (e) => {
