@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/RiderRanker/static/css/main.5e923365.css",
-    "main.js": "/RiderRanker/static/js/main.214cec33.js",
+    "main.css": "/RiderRanker/static/css/main.9330c4df.css",
+    "main.js": "/RiderRanker/static/js/main.65650be3.js",
     "static/media/geizmajesty.png": "/RiderRanker/static/media/geizmajesty.24b07152f01d1b19bd31.png",
     "static/media/grandzio.png": "/RiderRanker/static/media/grandzio.0aa9bc3259ff6c143467.png",
     "static/media/oumazio.png": "/RiderRanker/static/media/oumazio.0fa40cb1f49b2dbcbc26.png",
@@ -47,7 +47,6 @@
     "static/media/oooputotyra.png": "/RiderRanker/static/media/oooputotyra.ed7b02055b9fa883e05c.png",
     "static/media/amazonsomega.png": "/RiderRanker/static/media/amazonsomega.039b07b847c33d59c58d.png",
     "static/media/decadeviolentemotion.png": "/RiderRanker/static/media/decadeviolentemotion.06f51634acc8bf57f3ce.png",
-    "static/media/Bibiru_Ridewatch.png": "/RiderRanker/static/media/Bibiru_Ridewatch.bc5f6389d974b5a18eb0.png",
     "static/media/zangetsukachidoki.png": "/RiderRanker/static/media/zangetsukachidoki.050b3a53dc0b18037b0f.png",
     "static/media/denoclimax.png": "/RiderRanker/static/media/denoclimax.d5ba8fd1bddb3ffbe459.png",
     "static/media/buildhazard.png": "/RiderRanker/static/media/buildhazard.23d40507b1add3e9c925.png",
@@ -130,7 +129,6 @@
     "static/media/ghostmugen.png": "/RiderRanker/static/media/ghostmugen.457c1825d0ec36194b7e.png",
     "static/media/wozginga.png": "/RiderRanker/static/media/wozginga.f713df902acf2d607907.png",
     "static/media/gaimkachidoki.png": "/RiderRanker/static/media/gaimkachidoki.4ccd5bde1d50a78db669.png",
-    "static/media/ryusoulger.png": "/RiderRanker/static/media/ryusoulger.00a5763df73178034fba.png",
     "static/media/accel.png": "/RiderRanker/static/media/accel.c48803cfc451286a6508.png",
     "static/media/gaim.png": "/RiderRanker/static/media/gaim.965b3fd912c7f3f50dcb.png",
     "static/media/g3x.png": "/RiderRanker/static/media/g3x.a261fa39d61e2b0d7e15.png",
@@ -201,11 +199,11 @@
     "static/media/NOVA.svg": "/RiderRanker/static/media/NOVA.253021197c50b0da9dc2cd1c69b06296.svg",
     "static/media/ZERO.svg": "/RiderRanker/static/media/ZERO.d8704da350b8e1f7a9ae88334d9d1ced.svg",
     "index.html": "/RiderRanker/index.html",
-    "main.5e923365.css.map": "/RiderRanker/static/css/main.5e923365.css.map",
-    "main.214cec33.js.map": "/RiderRanker/static/js/main.214cec33.js.map"
+    "main.9330c4df.css.map": "/RiderRanker/static/css/main.9330c4df.css.map",
+    "main.65650be3.js.map": "/RiderRanker/static/js/main.65650be3.js.map"
   },
   "entrypoints": [
-    "static/css/main.5e923365.css",
-    "static/js/main.214cec33.js"
+    "static/css/main.9330c4df.css",
+    "static/js/main.65650be3.js"
   ]
 }
