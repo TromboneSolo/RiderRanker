@@ -9,8 +9,9 @@
 // Then paste the deployment URL into src/config.js.
 // ============================================================
 
-const SHEET_NAME    = "Rankings";
+const SHEET_NAME      = "Rankings";
 const DRIVE_FOLDER_ID = ""; // optional — paste a Drive folder ID to also save per-session JSON files
+const SUBMISSION_SECRET = "riderranker-2026"; // must match src/config.js
 
 // ------------------------------------------------------------
 // POST  — receives a ranking submission from the browser
@@ -18,6 +19,10 @@ const DRIVE_FOLDER_ID = ""; // optional — paste a Drive folder ID to also save
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
+
+    if (data._key !== SUBMISSION_SECRET) {
+      return jsonResponse({ success: false, error: "Unauthorized" });
+    }
 
     // Write one row per ranked item into the Rankings sheet
     const sheet = getOrCreateSheet();

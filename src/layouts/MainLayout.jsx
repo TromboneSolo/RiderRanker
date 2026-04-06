@@ -288,7 +288,7 @@ export default function MainLayout() {
   const handleSubmitResults = useCallback(() => {
     const rankings = importedRankings || (sortState ? getRankings(sortState) : null);
     if (!rankings) return;
-    const id = sessionId || `imported_${Date.now()}`;
+    const id = sessionId;
     setSubmissionStatus("submitting");
     submitRanking(id, rankings, activeStatsUrl || undefined).then(result => {
       if (result.skipped)        setSubmissionStatus("skipped");
@@ -347,6 +347,7 @@ export default function MainLayout() {
   // Accepts a pre-ranked list from an imported JSON/CSV file and jumps straight to results.
   const handleRankingsLoaded = useCallback((rankings) => {
     setImportedRankings(rankings);
+    setSessionId(`imported_${Date.now()}`);
     setActiveStatsUrl(null);
     setSubmissionStatus(null);
     setPhase("results");

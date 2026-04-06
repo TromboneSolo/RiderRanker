@@ -1,4 +1,4 @@
-import { APPS_SCRIPT_URL } from "../config";
+import { APPS_SCRIPT_URL, SUBMISSION_SECRET } from "../config";
 
 // Key used in sessionStorage to track which sessions have already been submitted
 // so that refreshing the results page doesn't produce duplicate rows.
@@ -18,6 +18,7 @@ export function submitRanking(sessionId, rankings, url = APPS_SCRIPT_URL) {
   if (submitted.has(sessionId)) return Promise.resolve({ duplicate: true });
 
   const payload = {
+    _key: SUBMISSION_SECRET,
     sessionId,
     timestamp: new Date().toISOString(),
     imageCount: rankings.length,

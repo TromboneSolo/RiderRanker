@@ -413,8 +413,11 @@ const DEMO_IMAGES_2 = [
 // internal format ({ id, name, src }[]) sorted by rank.
 function parseJSONRankings(text) {
   const data = JSON.parse(text);
-  if (!Array.isArray(data)) throw new Error("Expected a JSON array");
-  return data
+  if (!data || data._source !== "RiderRanker") {
+    throw new Error("This file wasn't exported from RiderRanker.");
+  }
+  if (!Array.isArray(data.rankings)) throw new Error("Invalid rankings format.");
+  return data.rankings
     .slice()
     .sort((a, b) => a.rank - b.rank)
     .map((item, i) => ({
@@ -502,6 +505,7 @@ export default function ImageUpload({ onImagesSelected, onRankingsLoaded, hasSav
       <h1>Image Ranker</h1>
       <p className="upload-subtitle">Upload images to rank them through head-to-head battles</p>
 
+      {/* Image upload disabled
       <div
         className="drop-zone"
         onDrop={handleDrop}
@@ -519,6 +523,7 @@ export default function ImageUpload({ onImagesSelected, onRankingsLoaded, hasSav
           onChange={(e) => loadFiles(e.target.files)}
         />
       </div>
+      */}
 
       {hasSavedSession && (
         <div className="resume-banner">

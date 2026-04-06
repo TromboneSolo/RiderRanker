@@ -11,6 +11,9 @@
 # production
 /build
 
+# local config (secrets — use config.example.js as a template)
+src/config.js
+
 # misc
 .DS_Store
 .env.local

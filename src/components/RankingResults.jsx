@@ -34,11 +34,14 @@ export default function RankingResults({ rankings: initialRankings, isPartial, o
   // Serialises the ranked list to JSON (rank, name, base64 image) and
   // triggers a browser file download.
   const handleSaveJSON = () => {
-    const data = rankings.map((img, i) => ({
-      rank: i + 1,
-      name: img.name,
-      image: img.src,
-    }));
+    const data = {
+      _source: "RiderRanker",
+      rankings: rankings.map((img, i) => ({
+        rank: i + 1,
+        name: img.name,
+        image: img.src,
+      })),
+    };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     downloadBlob(blob, "rankings.json");
   };
