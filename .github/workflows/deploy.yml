@@ -28,7 +28,7 @@ jobs:
         run: npm install
 
       - name: Build
-        run: NODE_OPTIONS=--openssl-legacy-provider react-scripts build
+        run: NODE_OPTIONS=--openssl-legacy-provider npx react-scripts build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
