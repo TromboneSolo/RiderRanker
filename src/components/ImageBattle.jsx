@@ -41,7 +41,7 @@ export default function ImageBattle({ fighter1, fighter2, onResult, onQuit, onSa
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [onResult, onUndo, canUndo]);
+  }, [handlePick, onUndo, canUndo]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Progress bar fills based on completed passes; each pass is roughly equal work.
   const progressPct = Math.round(((pass - 1) / totalPasses) * 100);

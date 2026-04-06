@@ -4,6 +4,7 @@ import ImageBattle from "../components/ImageBattle";
 import RankingResults from "../components/RankingResults";
 import StatsView from "../components/StatsView";
 import { submitRanking, fetchStats } from "../services/globalStats";
+// eslint-disable-next-line no-unused-vars
 import { APPS_SCRIPT_URL, APPS_SCRIPT_URL_RIDERS } from "../config";
 
 // ---------------------------------------------------------------------------

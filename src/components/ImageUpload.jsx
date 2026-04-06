@@ -397,7 +397,8 @@ const DEMO_IMAGES_3 = [
   { id: "demo_zeztz",   name: "ZEZTZ",   src: ZEZTZ   },
 ];
 
-// Built-in demo set 2 — Unit fighters
+// Built-in demo set 2 — Unit fighters (unused)
+// eslint-disable-next-line no-unused-vars
 const DEMO_IMAGES_2 = [
   { id: "demo_zero", name: "ZERO", src: ZERO },
   { id: "demo_phantom", name: "PHANTOM", src: PHANTOM },
@@ -468,6 +469,7 @@ export default function ImageUpload({ onImagesSelected, onRankingsLoaded, hasSav
 
   // Handles the drop event on the drop-zone div; extracts the dropped files
   // and passes them to loadFiles.
+  // eslint-disable-next-line no-unused-vars
   const handleDrop = useCallback((e) => {
     e.preventDefault();
     loadFiles(e.dataTransfer.files);
