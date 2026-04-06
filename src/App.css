@@ -568,6 +568,22 @@ body {
   background: #141414;
   border-radius: 10px;
   border-left: 3px solid #222;
+  cursor: grab;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.result-item:active { cursor: grabbing; }
+
+.result-item--drag-over {
+  background: #1e2a1e;
+  border-left-color: #00cc44;
+}
+
+.drag-handle {
+  color: #333;
+  font-size: 1.1rem;
+  cursor: grab;
+  user-select: none;
 }
 
 .result-item.rank-1 { border-left-color: #ffd700; }
@@ -741,6 +757,15 @@ body {
   font-weight: 600;
   border-bottom: 1px solid #1e1e1e;
   white-space: nowrap;
+}
+
+.stats-th-sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.stats-th-sortable:hover {
+  color: #aaa;
 }
 
 .stats-table td {

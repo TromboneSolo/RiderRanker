@@ -1,10 +1,35 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 
 // Displays the final ranked list produced by the merge sort.
 // Rankings are passed in already sorted (index 0 = most preferred).
 // isPartial is true when the user finished early and the sort was incomplete.
 // submissionStatus reflects whether results have been sent to global stats.
-export default function RankingResults({ rankings, isPartial, onReset, onViewStats, onSubmit, submissionStatus, comparisonStats, comparisonReady }) {
+export default function RankingResults({ rankings: initialRankings, isPartial, onReset, onViewStats, onSubmit, submissionStatus, comparisonStats, comparisonReady }) {
+  const [rankings, setRankings] = useState(initialRankings);
+  const dragIdx = useRef(null);
+  const [dragOverIdx, setDragOverIdx] = useState(null);
+
+  const handleDragStart = (i) => { dragIdx.current = i; };
+
+  const handleDragOver = (e, i) => {
+    e.preventDefault();
+    setDragOverIdx(i);
+  };
+
+  const handleDrop = (i) => {
+    if (dragIdx.current === null || dragIdx.current === i) return;
+    const next = [...rankings];
+    const [moved] = next.splice(dragIdx.current, 1);
+    next.splice(i, 0, moved);
+    setRankings(next);
+    dragIdx.current = null;
+    setDragOverIdx(null);
+  };
+
+  const handleDragEnd = () => {
+    dragIdx.current = null;
+    setDragOverIdx(null);
+  };
 
   // Serialises the ranked list to JSON (rank, name, base64 image) and
   // triggers a browser file download.
@@ -110,7 +135,16 @@ export default function RankingResults({ rankings, isPartial, onReset, onViewSta
 
       <div className="results-list">
         {rankings.map((img, index) => (
-          <div key={img.id} className={`result-item rank-${index + 1}`}>
+          <div
+            key={img.id}
+            className={`result-item rank-${index + 1}${dragOverIdx === index ? " result-item--drag-over" : ""}`}
+            draggable
+            onDragStart={() => handleDragStart(index)}
+            onDragOver={(e) => handleDragOver(e, index)}
+            onDrop={() => handleDrop(index)}
+            onDragEnd={handleDragEnd}
+          >
+            <span className="drag-handle">⠿</span>
             <span className="rank-number">#{index + 1}</span>
             <img src={img.src} alt={img.name} className="result-thumbnail" />
             <span className="result-name">{img.name}</span>
