@@ -23,14 +23,15 @@ function playBeep() {
 export default function ImageBattle({ fighter1, fighter2, onResult, onQuit, onSave, onRandomFinish, onUndo, canUndo,
                                       comparisons, pass, totalPasses, imageCount, saveStatus }) {
   const [floatAnim, setFloatAnim] = useState(null); // { side: "left"|"right", id: number }
+  const [muted, setMuted] = useState(false);
 
   const handlePick = useCallback((fighter) => {
-    playBeep();
+    if (!muted) playBeep();
     if (fighter !== "tie") {
       setFloatAnim({ side: fighter === "fighter1" ? "left" : "right", id: Date.now() });
     }
     onResult(fighter);
-  }, [onResult]);
+  }, [onResult, muted]);
 
   useEffect(() => {
     const handleKey = (e) => {
@@ -69,6 +70,7 @@ export default function ImageBattle({ fighter1, fighter2, onResult, onQuit, onSa
         ) : (
           <button className="save-progress-btn" onClick={onSave}>Save</button>
         )}
+        <button className="mute-btn" onClick={() => setMuted(m => !m)}>{muted ? "Unmute" : "Mute"}</button>
         <button className="undo-btn" onClick={onUndo} disabled={!canUndo}>Undo</button>
         <button className="quit-btn" onClick={onQuit}>Finish Early</button>
         <button className="quit-btn" onClick={onRandomFinish}>Finish For Me</button>
